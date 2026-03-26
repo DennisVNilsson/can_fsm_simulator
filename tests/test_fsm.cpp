@@ -43,7 +43,7 @@ static const Transition rules[] = {
 
 static Fsm fsm(rules, 3, IDLE);
 
-static void initial_state_is_IDLE() {
+static void test_initial_state_is_IDLE() {
   fsm.reset(); 
   action_fired = false; 
   TEST_BEGIN("Check that initial state is IDLE") 
@@ -51,7 +51,7 @@ static void initial_state_is_IDLE() {
   TEST_END 
 }
 
-static void disp_EVT_START_from_IDLE_into_RUNNING() {
+static void test_disp_EVT_START_from_IDLE_into_RUNNING() {
   fsm.reset(); 
   action_fired = false; 
   TEST_BEGIN("Check that EVT_START brings IDLE to RUNNING on start") 
@@ -62,7 +62,7 @@ static void disp_EVT_START_from_IDLE_into_RUNNING() {
   TEST_END
 }
 
-static void disp_unknown_evt_does_nothing() {
+static void test_disp_unknown_evt_does_nothing() {
   fsm.reset(); 
   action_fired = false; 
   TEST_BEGIN("Dispatching an unknown event does nothing")
@@ -74,9 +74,9 @@ static void disp_unknown_evt_does_nothing() {
 }
 
 int main() {
-  initial_state_is_IDLE(); 
-  disp_EVT_START_from_IDLE_into_RUNNING(); 
-  disp_unknown_evt_does_nothing();
+  test_initial_state_is_IDLE(); 
+  test_disp_EVT_START_from_IDLE_into_RUNNING(); 
+  test_disp_unknown_evt_does_nothing();
 
   printf("\n── Results ──────────────────\n");
   printf("  Passed : %d\n", s_passed);
