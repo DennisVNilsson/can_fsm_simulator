@@ -12,6 +12,10 @@ add_library(fsm
     src/fsm.cpp
 )
 target_include_directories(fsm PUBLIC include third_party/emalloc)
+add_library(can_bus
+    src/can_bus.cpp
+)
+target_include_directories(can_bus PUBLIC include third_party/emalloc)
 
 # ── FSM unit tests ────────────────────────────────────────────────────────
 add_executable(tests_fsm
