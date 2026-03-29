@@ -36,4 +36,5 @@ public:
   void set_sensor_value(uint16_t sv); 
   CanBus* get_shared_bus() const; 
   uint8_t state() const;
+  void reset(); 
 };

@@ -48,3 +48,5 @@ void SensorNode::set_sensor_value(uint16_t sv) { sensor_value_ = sv; }
 CanBus* SensorNode::get_shared_bus() const { return shared_bus_; }
 
 uint8_t SensorNode::state() const { return fsm_.state(); }
+
+void SensorNode::reset() { fsm_.reset(); }

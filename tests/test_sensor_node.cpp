@@ -18,6 +18,11 @@ static int s_failed = 0;
 #define TEST_BEGIN(name) { printf("  %-50s", name);
 #define TEST_END           printf("OK\n"); s_passed++; }
 
+static bool frame_received = false;
+static void on_frame(const CanFrame& f) {
+    if (f.id == can::ID_SENSOR) frame_received = true;
+}
+
 // ── Shared fixtures ───────────────────────────────────────────────────────
 static CanBus bus;
 static SensorNode node_sensor_test(&bus);
@@ -25,22 +30,28 @@ static SensorNode node_sensor_test(&bus);
 // ── Tests ─────────────────────────────────────────────────────────────────
 
 static void test_initial_state_is_idle() {
+  node_sensor_test.reset();
   TEST_BEGIN("node_sensor_test initial state is IDLE")
   CHECK(node_sensor_test.state() == sensor::state::IDLE);
   TEST_END
 }
 
 static void test_idle_after_once_cycle() {
+  node_sensor_test.reset();
+  frame_received = false; 
+  bus.attach({can::ID_SENSOR, 0x7FF, on_frame}); 
   TEST_BEGIN("node_sensor_test state is IDLE after ")
   node_sensor_test.tick();
   node_sensor_test.tick();
   node_sensor_test.tick();
   CHECK(node_sensor_test.state() == sensor::state::IDLE);
   bus.tick();  
+  CHECK(frame_received); 
   TEST_END
 }
 
 static void test_on_fault() {
+  node_sensor_test.reset();
   TEST_BEGIN("node_sensor_test state moves to FAULT when calling fault()")
   node_sensor_test.on_fault(); 
   CHECK(node_sensor_test.state() == sensor::state::FAULT); 
