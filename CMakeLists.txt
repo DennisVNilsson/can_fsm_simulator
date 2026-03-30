@@ -20,9 +20,11 @@ add_library(can_bus
 target_include_directories(can_bus PUBLIC include third_party/emalloc)
 add_library(nodes
     src/sensor_node.cpp
+    src/controller_node.cpp
 )
 target_include_directories(nodes PUBLIC include third_party/emalloc)
 target_link_libraries(nodes PRIVATE fsm can_bus)
+target_link_libraries(can_bus PUBLIC fsm)
 
 # ── FSM unit tests ────────────────────────────────────────────────────────
 add_executable(tests_fsm
@@ -33,8 +35,13 @@ add_executable(tests_sensor_node
     tests/test_sensor_node.cpp
 )
 target_link_libraries(tests_sensor_node PRIVATE nodes)
+add_executable(tests_controller_node
+    tests/test_controller_node.cpp
+)
+target_link_libraries(tests_controller_node PRIVATE nodes)
 
 # ── CTest ─────────────────────────────────────────────────────────────────
 enable_testing()
 add_test(NAME fsm_tests COMMAND tests_fsm)
 add_test(NAME sensor_node_tests COMMAND tests_sensor_node)
+add_test(NAME controller_node_tests COMMAND tests_controller_node)
